@@ -2,8 +2,6 @@
 
 ---
 
-This version is missing the filter feature that I'll be adding soon
-
 ## How to Use
 1. Change URL variable to point at your own website.
 2. Update your URL filters in the filterArray
