@@ -8,6 +8,22 @@ Dim link, links
 ' Change this to the URL you want to scrape
 URL = "https://lostinthecyberabyss.com"
 
+' Array of strings to filter file names
+Dim filterArray
+filterArray = Array("admin", "test", "debug", "wordpress.org")
+
+' Function to check if a file name contains any filter string
+Function IsFiltered(fileName)
+    Dim i
+    For i = LBound(filterArray) To UBound(filterArray)
+        If InStr(LCase(fileName), LCase(filterArray(i))) > 0 Then
+            IsFiltered = True
+            Exit Function
+        End If
+    Next
+    IsFiltered = False
+End Function
+
 ' Create Internet Explorer instance
 Set IE = CreateObject("InternetExplorer.Application")
 IE.Visible = False
@@ -30,7 +46,7 @@ xmlDoc.appendChild rootElement
 ' Collect links and add them as <url> and <loc> elements
 Set links = IE.document.getElementsByTagName("a")
 For Each link in links
-    If link.href <> "" Then
+    If link.href <> "" And Not IsFiltered(link.href) Then
         Set urlElement = xmlDoc.createElement("url")
         Set locElement = xmlDoc.createElement("loc")
         locElement.Text = link.href
